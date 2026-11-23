@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+.github
+
+# Virtual environments
+.venv
+venv
+env
+
+# Python cache
+__pycache__
+*.py[cod]
+.pytest_cache
+.coverage
+htmlcov
+
+# IDE
+.vscode
+.idea
+
+# Environment variables
+.env
+.env.*
+
+# Documentation and local files
+docs
+*.log
+
+# Operating systems
+.DS_Store
+Thumbs.db
