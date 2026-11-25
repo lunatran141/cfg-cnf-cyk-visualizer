@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Ứng dụng chuyển đổi CFG sang CNF và trực quan hóa thuật toán CYK."
+    >
+
+    <title>{{ app_name }}</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <div>
+                <p class="project-label">
+                    Ngôn ngữ hình thức và Automata
+                </p>
+
+                <h1>CFG–CNF–CYK Visualizer</h1>
+
+                <p class="project-description">
+                    Chuyển đổi văn phạm phi ngữ cảnh sang dạng chuẩn
+                    Chomsky và trực quan hóa thuật toán CYK.
+                </p>
+            </div>
+
+            <span class="status-badge">
+                Skeleton T01
+            </span>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <section class="workspace-panel input-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="step-label">Bước 1</p>
+                    <h2>Nhập dữ liệu</h2>
+                </div>
+
+                <button
+                    id="load-example-button"
+                    class="button button-secondary"
+                    type="button"
+                >
+                    Dùng ví dụ
+                </button>
+            </div>
+
+            <form id="grammar-form">
+                <div class="form-group">
+                    <label for="grammar-input">
+                        Văn phạm CFG
+                    </label>
+
+                    <p class="field-hint">
+                        Mỗi biến nằm trên một dòng. Các lựa chọn được
+                        phân tách bằng dấu “|”.
+                    </p>
+
+                    <textarea
+                        id="grammar-input"
+                        name="grammar"
+                        rows="10"
+                        placeholder="S -> AB | BC&#10;A -> BA | a&#10;B -> CC | b&#10;C -> AB | a"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start-symbol-input">
+                            Ký hiệu bắt đầu
+                        </label>
+
+                        <input
+                            id="start-symbol-input"
+                            name="start_symbol"
+                            type="text"
+                            value="S"
+                            maxlength="20"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="word-input">
+                            Chuỗi cần kiểm tra
+                        </label>
+
+                        <input
+                            id="word-input"
+                            name="word"
+                            type="text"
+                            placeholder="Ví dụ: baaba"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button
+                        class="button button-primary"
+                        type="submit"
+                    >
+                        Phân tích văn phạm
+                    </button>
+
+                    <button
+                        id="reset-button"
+                        class="button button-ghost"
+                        type="reset"
+                    >
+                        Xóa dữ liệu
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="workspace-panel result-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="step-label">Bước 2</p>
+                    <h2>Kết quả xử lý</h2>
+                </div>
+
+                <span
+                    id="result-status"
+                    class="result-status waiting"
+                >
+                    Đang chờ dữ liệu
+                </span>
+            </div>
+
+            <div id="empty-result" class="empty-state">
+                <div class="empty-state-icon" aria-hidden="true">
+                    ∑
+                </div>
+
+                <h3>Chưa có kết quả</h3>
+
+                <p>
+                    Nhập văn phạm và chuỗi, sau đó chọn
+                    “Phân tích văn phạm” để bắt đầu.
+                </p>
+            </div>
+
+            <div id="result-content" class="result-content" hidden>
+                <article class="result-card">
+                    <h3>Văn phạm đã nhập</h3>
+                    <pre id="grammar-output"></pre>
+                </article>
+
+                <article class="result-card">
+                    <h3>Chuỗi cần kiểm tra</h3>
+                    <p id="word-output"></p>
+                </article>
+
+                <article class="result-card">
+                    <h3>Trạng thái</h3>
+                    <p>
+                        Parser, chuyển đổi CNF và thuật toán CYK
+                        sẽ được tích hợp trong các task tiếp theo.
+                    </p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>
+            CFG–CNF–CYK Visualizer · Formal Languages and Automata
+        </p>
+    </footer>
+
+    <script
+        src="{{ url_for('static', filename='js/app.js') }}"
+        defer
+    ></script>
+</body>
+</html>
