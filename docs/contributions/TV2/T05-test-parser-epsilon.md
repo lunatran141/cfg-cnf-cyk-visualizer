@@ -151,8 +151,10 @@ python -m pytest -v
 | `tests/test_parser.py` | T02 (TV5) | 46 | 46 | 0 | — |
 | `tests/test_parser_errors.py` | T03 (TV5) | 60 | 60 | 0 | — |
 | `tests/test_remove_epsilon.py` | T04 (TV2) | 52 | 52 | 0 | — |
-| **`tests/test_parser_epsilon.py`** | **T05 (TV2)** | **80** | **80** | **0** | **0.35s** |
-| **Tổng toàn dự án (`python -m pytest -v`)** | **T01–T05** | **242** | **242** | **0** | **0.40s** |
+| **`tests/test_parser_epsilon.py`** | **T05 (TV2)** | **80** | **80** | **0** | **0.46s** |
+| **Tổng toàn dự án (`python -m pytest -v`)** | **T01–T05** | **242** | **242** | **0** | **0.62s** |
+
+> *Ghi chú:* Thời gian chạy trong bảng chỉ mang tính tham khảo. Thời gian chạy phụ thuộc cấu hình máy và môi trường Python.
 
 Chi tiết phân bổ trong riêng `tests/test_parser_epsilon.py` (**80/80 PASS**):
 - `TestParserValidMatrix`: **10 passed**
@@ -200,12 +202,18 @@ Quá trình kiểm thử chéo Parser (T02/T03) và `removeEpsilon` (T04) ghi nh
 
 ---
 
-## 9. Minh chứng cần bổ sung
+## 9. Minh chứng
 
-- [ ] Ảnh chụp terminal chạy `.venv\Scripts\python.exe -m pytest tests/test_parser_epsilon.py -v` (**80 passed**).
-- [ ] Ảnh chụp terminal chạy `.venv\Scripts\python.exe -m pytest -v` toàn dự án (**242 passed**).
-- [ ] Link Pull Request nhánh `feature/T05-test-parser-epsilon` vào `develop`.
-- [ ] Ảnh xác nhận 2 job GitHub Actions (`CI / test` và `CI / docker-build`) xanh sau khi đẩy PR.
+- [x] Ảnh chụp terminal chạy riêng bộ test T05 (`pytest tests/test_parser_epsilon.py -v` — **80 passed**):
+
+  ![T05 task tests passed](evidence/T05/t05-task-tests-passed.png)
+
+- [x] Ảnh chụp terminal chạy toàn dự án (`pytest -v` — **242 passed**):
+
+  ![T05 all tests passed](evidence/T05/t05-all-tests-passed.png)
+
+- [ ] Link Pull Request nhánh `feature/T05-test-parser-epsilon` vào `develop` *(bổ sung sau khi tạo PR)*.
+- [ ] Ảnh xác nhận 2 job GitHub Actions (`CI / test` và `CI / docker-build`) xanh (`evidence/T05/t05-ci-green.png`, *bổ sung sau khi CI chạy xong trên PR*).
 
 ---
 
