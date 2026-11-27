@@ -130,7 +130,7 @@ Toàn bộ ma trận gồm **46 hạng mục Test Case (`TC-PV01..10`, `TC-PI01.
 ### 5.1. Môi trường thực thi
 
 - Hệ điều hành: Windows
-- Python local: `3.13.7` (trong môi trường ảo `.venv`, cú pháp tương thích hoàn toàn Python `3.11` trên GitHub Actions CI)
+- Python: `3.11` (theo môi trường chuẩn của repository / CI; kết quả có thể khác nhẹ về thời gian giữa các máy)
 - Pytest: `9.2.0`
 
 ### 5.2. Lệnh chạy kiểm thử
