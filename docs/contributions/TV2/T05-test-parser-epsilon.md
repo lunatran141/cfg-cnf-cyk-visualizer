@@ -212,8 +212,11 @@ Quá trình kiểm thử chéo Parser (T02/T03) và `removeEpsilon` (T04) ghi nh
 
   ![T05 all tests passed](evidence/T05/t05-all-tests-passed.png)
 
-- [ ] Link Pull Request nhánh `feature/T05-test-parser-epsilon` vào `develop` *(bổ sung sau khi tạo PR)*.
-- [ ] Ảnh xác nhận 2 job GitHub Actions (`CI / test` và `CI / docker-build`) xanh (`evidence/T05/t05-ci-green.png`, *bổ sung sau khi CI chạy xong trên PR*).
+- [x] Ảnh xác nhận 2 job GitHub Actions (`CI / test` và `CI / docker-build`) xanh (`All checks have passed`):
+
+  ![T05 CI green](evidence/T05/t05-ci-green.png)
+
+- [x] Link Pull Request nhánh `feature/T05-test-parser-epsilon` vào `develop`: https://github.com/lunatran141/cfg-cnf-cyk-visualizer/pull/8
 
 ---
 
