@@ -130,7 +130,7 @@ Toàn bộ ma trận gồm **46 hạng mục Test Case (`TC-PV01..10`, `TC-PI01.
 ### 5.1. Môi trường thực thi
 
 - Hệ điều hành: Windows
-- Python local: `3.13.7` (trong môi trường ảo `.venv`, cú pháp tương thích hoàn toàn Python `3.11` trên GitHub Actions CI)
+- Python: `3.11` (theo môi trường chuẩn của repository / CI; kết quả có thể khác nhẹ về thời gian giữa các máy)
 - Pytest: `9.2.0`
 
 ### 5.2. Lệnh chạy kiểm thử
@@ -151,8 +151,10 @@ python -m pytest -v
 | `tests/test_parser.py` | T02 (TV5) | 46 | 46 | 0 | — |
 | `tests/test_parser_errors.py` | T03 (TV5) | 60 | 60 | 0 | — |
 | `tests/test_remove_epsilon.py` | T04 (TV2) | 52 | 52 | 0 | — |
-| **`tests/test_parser_epsilon.py`** | **T05 (TV2)** | **80** | **80** | **0** | **0.35s** |
-| **Tổng toàn dự án (`python -m pytest -v`)** | **T01–T05** | **242** | **242** | **0** | **0.40s** |
+| **`tests/test_parser_epsilon.py`** | **T05 (TV2)** | **80** | **80** | **0** | **0.46s** |
+| **Tổng toàn dự án (`python -m pytest -v`)** | **T01–T05** | **242** | **242** | **0** | **0.62s** |
+
+> *Ghi chú:* Thời gian chạy trong bảng chỉ mang tính tham khảo. Thời gian chạy phụ thuộc cấu hình máy và môi trường Python.
 
 Chi tiết phân bổ trong riêng `tests/test_parser_epsilon.py` (**80/80 PASS**):
 - `TestParserValidMatrix`: **10 passed**
@@ -200,12 +202,21 @@ Quá trình kiểm thử chéo Parser (T02/T03) và `removeEpsilon` (T04) ghi nh
 
 ---
 
-## 9. Minh chứng cần bổ sung
+## 9. Minh chứng
 
-- [ ] Ảnh chụp terminal chạy `.venv\Scripts\python.exe -m pytest tests/test_parser_epsilon.py -v` (**80 passed**).
-- [ ] Ảnh chụp terminal chạy `.venv\Scripts\python.exe -m pytest -v` toàn dự án (**242 passed**).
-- [ ] Link Pull Request nhánh `feature/T05-test-parser-epsilon` vào `develop`.
-- [ ] Ảnh xác nhận 2 job GitHub Actions (`CI / test` và `CI / docker-build`) xanh sau khi đẩy PR.
+- [x] Ảnh chụp terminal chạy riêng bộ test T05 (`pytest tests/test_parser_epsilon.py -v` — **80 passed**):
+
+  ![T05 task tests passed](evidence/T05/t05-task-tests-passed.png)
+
+- [x] Ảnh chụp terminal chạy toàn dự án (`pytest -v` — **242 passed**):
+
+  ![T05 all tests passed](evidence/T05/t05-all-tests-passed.png)
+
+- [x] Ảnh xác nhận 2 job GitHub Actions (`CI / test` và `CI / docker-build`) xanh (`All checks have passed`):
+
+  ![T05 CI green](evidence/T05/t05-ci-green.png)
+
+- [x] Link Pull Request nhánh `feature/T05-test-parser-epsilon` vào `develop`: https://github.com/lunatran141/cfg-cnf-cyk-visualizer/pull/8
 
 ---
 
