@@ -12,6 +12,12 @@ from typing import Any
 from app.models.grammar import Grammar, Production
 
 
+def _validate_grammar_input(grammar: object) -> None:
+    """Kiểm tra đầu vào có phải đối tượng Grammar hợp lệ không."""
+    if not isinstance(grammar, Grammar):
+        raise TypeError("Đầu vào phải là đối tượng Grammar.")
+
+
 def is_unit_production(rhs: Production, variables: set[str]) -> bool:
     """Kiểm tra một vế phải có phải là luật sinh đơn vị hay không.
     
@@ -27,6 +33,7 @@ def build_unit_graph(grammar: Grammar) -> dict[str, set[str]]:
     Mỗi đỉnh là một biến thuộc grammar.variables.
     Cung có hướng (A, B) tồn tại nếu tồn tại luật sinh A -> B với B in V.
     """
+    _validate_grammar_input(grammar)
     graph: dict[str, set[str]] = {v: set() for v in grammar.variables}
     for lhs, rhs_set in grammar.productions.items():
         if lhs not in graph:
@@ -46,6 +53,7 @@ def compute_unit_closures(grammar: Grammar) -> dict[str, set[str]]:
     
     Sử dụng thuật toán tìm kiếm theo chiều rộng (BFS) từ từng đỉnh trên đồ thị luật đơn vị.
     """
+    _validate_grammar_input(grammar)
     graph = build_unit_graph(grammar)
     closures: dict[str, set[str]] = {}
 
@@ -114,6 +122,7 @@ def remove_unit_productions(grammar: Grammar) -> tuple[Grammar, dict[str, Any]]:
             - Văn phạm mới không còn luật đơn vị.
             - Bản ghi log chi tiết các bước thực hiện.
     """
+    _validate_grammar_input(grammar)
     unit_graph = build_unit_graph(grammar)
     closures = compute_unit_closures(grammar)
     cycles = detect_unit_cycles(unit_graph)

@@ -1,15 +1,16 @@
 """Bộ kiểm thử đơn vị cho thuật toán loại bỏ Unit Productions (T06)."""
 
 import pytest
+from app.algorithms.cnf import removeEpsilon, removeUnit
 from app.algorithms.cnf.unit import (
     build_unit_graph,
     compute_unit_closures,
     detect_unit_cycles,
     is_unit_production,
     remove_unit_productions,
-    removeUnit,
 )
 from app.models.grammar import Grammar, EPSILON
+from app.services.parser import parseGrammar
 
 
 def test_is_unit_production():
@@ -108,7 +109,7 @@ def test_remove_unit_self_loop():
 
 
 def test_remove_unit_no_unit_productions():
-    """Kiểm tra tính bất biến (idempotence) khi văn phạm không có luật đơn vị."""
+    """Kiểm tra văn phạm không có luật đơn vị thì giữ nguyên không đổi."""
     g = Grammar(variables={"S", "A"}, terminals={"a", "b"}, start_symbol="S")
     g.add_production("S", ("A", "b"))
     g.add_production("S", ("a",))
@@ -197,3 +198,62 @@ def test_removeUnit_alias_consistency():
 
     assert res1_g.productions == res2_g.productions
     assert res1_log == res2_log
+
+
+@pytest.mark.parametrize("bad_input", [None, "S -> A", 123, []])
+def test_remove_unit_invalid_input(bad_input):
+    """Kiểm tra ném TypeError khi đầu vào không phải đối tượng Grammar."""
+    with pytest.raises(TypeError):
+        removeUnit(bad_input)
+
+
+def test_remove_unit_idempotence():
+    """Kiểm tra tính lũy đẳng (idempotence): chạy removeUnit 2 lần cho kết quả giống nhau."""
+    g = Grammar(variables={"S", "A", "B"}, terminals={"a", "b"}, start_symbol="S")
+    g.add_production("S", ("A",))
+    g.add_production("A", ("B",))
+    g.add_production("B", ("A",))
+    g.add_production("A", ("a",))
+    g.add_production("B", ("b",))
+
+    first, _ = removeUnit(g)
+    second, second_log = removeUnit(first)
+
+    assert second.to_dict() == first.to_dict()
+    assert second_log["original_unit_count"] == 0
+
+
+@pytest.mark.parametrize(
+    "grammar_text",
+    [
+        "S -> A | ε\nA -> B | a\nB -> b",
+        "S -> a A | B\nA -> b | ε\nB -> C\nC -> c",
+    ],
+)
+def test_integration_parser_remove_epsilon_and_remove_unit(grammar_text):
+    """Kiểm thử tích hợp pipeline thật: parseGrammar -> removeEpsilon -> removeUnit."""
+    parsed = parseGrammar(grammar_text)
+    assert parsed.success and parsed.grammar is not None
+
+    before_epsilon = parsed.grammar.to_dict()
+    epsilon_result = removeEpsilon(parsed.grammar)
+    before_unit = epsilon_result.grammar.to_dict()
+
+    unit_grammar, unit_log = removeUnit(epsilon_result.grammar)
+
+    # 1. Không còn bất kỳ unit production nào
+    for lhs, prods in unit_grammar.productions.items():
+        for rhs in prods:
+            assert not is_unit_production(rhs, unit_grammar.variables), (
+                f"Vẫn còn luật đơn vị {lhs} -> {rhs}"
+            )
+
+    # 2. Chỉ còn ε hợp lệ ở start symbol mới (nếu ngôn ngữ chứa ε)
+    for lhs, prods in unit_grammar.productions.items():
+        if EPSILON in prods:
+            assert lhs == unit_grammar.start_symbol
+
+    # 3. Grammar đầu vào của mỗi bước không bị sửa đổi (immutability)
+    assert parsed.grammar.to_dict() == before_epsilon
+    assert epsilon_result.grammar.to_dict() == before_unit
+    assert isinstance(unit_log, dict)

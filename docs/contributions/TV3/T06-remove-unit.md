@@ -198,7 +198,7 @@ Cho:
 
 **Tổng độ phức tạp thời gian:**
 $$\mathcal{O}(|P| + |V| \cdot (|V| + |E_{unit}|) + |V| \cdot |P|) = \mathcal{O}(|V|^3 + |V| \cdot |P|)$$
-Đối với văn phạm thông thường trong thực tế, thuật toán thực thi tức thì (dưới 1 mili-giây).
+Với các grammar nhỏ trong bộ test hiện tại, thời gian xử lý là rất nhỏ; việc đánh giá định lượng sẽ được thực hiện ở T23.
 
 ### 6.2. Độ phức tạp không gian (Space Complexity)
 
@@ -227,12 +227,15 @@ Bộ kiểm thử được viết độc lập tại:
 | 4 | `test_remove_unit_cycle_two_variables` | $A \to B \mid a$, $B \to A \mid b$ | $A \to a \mid b$, $B \to a \mid b$, phát hiện chu trình | PASSED |
 | 5 | `test_remove_unit_cycle_three_variables` | $S \to A \to B \to S$, $B \to c$ | $S, A, B$ đều sinh $c$, không vòng lặp vô tận | PASSED |
 | 6 | `test_remove_unit_self_loop` | $A \to A \mid a$ | $A \to a$, tự vòng lặp bị xóa sạch | PASSED |
-| 7 | `test_remove_unit_no_unit_productions` | $S \to AB \mid a$, $A \to b$ | Không thay đổi văn phạm (tính bất biến Idempotence) | PASSED |
+| 7 | `test_remove_unit_no_unit_productions` | $S \to AB \mid a$, $A \to b$ | Văn phạm không có luật đơn vị giữ nguyên không đổi | PASSED |
 | 8 | `test_remove_unit_variable_with_no_productions` | $S \to A \mid a$, $A$ rỗng | $S \to a$, $A$ không sinh luật | PASSED |
 | 9 | `test_remove_unit_diamond_graph` | $S \to A \mid B$, $A \to C$, $B \to C$, $C \to c$ | $S \to c$, không nhân bản trùng lặp | PASSED |
 | 10 | `test_remove_unit_preserves_epsilon_and_binary` | $S \to A$, $A \to ab \mid \varepsilon$ | $S \to ab \mid \varepsilon$, $A \to ab \mid \varepsilon$ | PASSED |
 | 11 | `test_remove_unit_immutability` | Kiểm tra văn phạm truyền vào hàm | Đối tượng đầu vào không bị biến đổi đột biến (pure function) | PASSED |
 | 12 | `test_removeUnit_alias_consistency` | Gọi `removeUnit` và `remove_unit_productions` | Kết quả trả về giống hệt nhau | PASSED |
+| 13 | `test_remove_unit_invalid_input` | `None`, `"S -> A"`, `123`, `[]` (4 cases) | Ném `TypeError` rõ ràng khi đầu vào sai kiểu | PASSED |
+| 14 | `test_remove_unit_idempotence` | Chạy `removeUnit` 2 lần liên tiếp | Kết quả lần 2 trùng khớp lần 1, không còn unit | PASSED |
+| 15 | `test_integration_parser_remove_epsilon_and_remove_unit` | `parseGrammar` $\to$ `removeEpsilon` $\to$ `removeUnit` (2 cases) | Hết unit, chỉ còn $\varepsilon$ hợp lệ ở start symbol, bảo toàn immutability | PASSED |
 
 ### 7.2. Kết quả chạy Pytest
 
@@ -294,6 +297,6 @@ Task T06 đã hoàn thành xuất sắc toàn bộ checklist được giao:
 - [x] Xây dựng đồ thị unit production và tính unit-closure bằng BFS.
 - [x] Thay thế $A \to B$ bằng các non-unit production của $B$ và xóa sạch luật unit.
 - [x] Xử lý trơn tru các chu trình $A \to B \to A$, self-loop, diamond graph, không sót luật hợp lệ.
-- [x] Viết 12 test case chuyên sâu đạt 100% pass rate.
+- [x] Viết 19 test case chuyên sâu (bao gồm input validation, idempotence và tích hợp T04 $\to$ T06) đạt 100% pass rate.
 - [x] Cung cấp đầy đủ hàm `remove_unit_productions` kèm alias `removeUnit` và cấu trúc log chi tiết.
 - [x] Soạn thảo báo cáo kỹ thuật hoàn chỉnh tại `docs/contributions/TV3/T06-remove-unit.md`.
