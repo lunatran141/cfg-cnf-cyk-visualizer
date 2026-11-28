@@ -9,8 +9,17 @@ from app.algorithms.cnf.remove_epsilon import (
     generate_fresh_start_symbol,
     removeEpsilon,
 )
+from app.algorithms.cnf.unit import (
+    build_unit_graph,
+    compute_unit_closures,
+    detect_unit_cycles,
+    is_unit_production,
+    remove_unit_productions,
+    removeUnit,
+)
 
 __all__ = [
+    # T04 - Remove Epsilon
     "EpsilonStepLog",
     "RemoveEpsilonResult",
     "RuleChange",
@@ -18,4 +27,11 @@ __all__ = [
     "find_nullable_variables",
     "generate_fresh_start_symbol",
     "removeEpsilon",
+    # T06 - Remove Unit Productions
+    "build_unit_graph",
+    "compute_unit_closures",
+    "detect_unit_cycles",
+    "is_unit_production",
+    "remove_unit_productions",
+    "removeUnit",
 ]
